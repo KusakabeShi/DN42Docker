@@ -1,0 +1,11 @@
+#!/bin/bash
+. /.denv
+if [[ "$BIRDLG_PROXY" == 1 ]]; then
+  echo "birdlg_proxy enabled, start"
+  export BIRDLG_TRACEROUTE_BIN=traceroute_uml
+  exec bird-lg-proxy --listen=:$BIRDLG_PROXY_PORT
+else
+  echo "birdlg_proxy not enabled, down"
+  sv down birdlg_proxy
+  exec sleep infinity
+fi

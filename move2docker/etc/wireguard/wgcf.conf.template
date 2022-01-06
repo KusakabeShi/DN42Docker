@@ -1,0 +1,6 @@
+[Interface]
+PrivateKey = ${WGCF_PRIVKEY}
+[Peer]
+PublicKey = ${WGCF_PUBKEY}
+AllowedIPs = 0.0.0.0/0 , ::/0
+Endpoint = engage.cloudflareclient.com:2408

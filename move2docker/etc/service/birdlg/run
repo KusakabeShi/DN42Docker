@@ -1,0 +1,10 @@
+#!/bin/bash
+. /.denv
+if [[ "$BIRDLG" == 1 ]]; then
+  echo "birdlg enabled, start"
+  exec bird-lg-frontend --listen=:$BIRDLG_PORT
+else
+  echo "birdlg not enabled, down"
+  sv down birdlg
+  exec sleep infinity
+fi

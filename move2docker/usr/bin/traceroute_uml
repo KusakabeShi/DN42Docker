@@ -1,0 +1,17 @@
+#!/bin/python3
+import shlex
+import socket
+import sys
+params=["traceroute"] + sys.argv[1:]
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("127.0.0.1", 2227))
+
+outdata = " ".join(map(shlex.quote,params)) + " ; exit\n"
+s.send(outdata.encode())
+while True:
+    indata = s.recv(1024)
+    if len(indata) == 0: # connection closed
+        s.close()
+        break
+    print(indata.decode(errors="ignore"),end="")

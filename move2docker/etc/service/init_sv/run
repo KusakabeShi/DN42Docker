@@ -1,0 +1,18 @@
+#!/bin/bash
+. /.denv
+if [ -z "$INIT_STARTUP" ]
+then
+  echo "INIT_STARTUP not set, init_sv down"
+  sv down init_sv
+  sleep infinity
+else
+  array=(${INIT_STARTUP//:/ })
+  for i in "${!array[@]}"
+  do
+    appname=${array[i]}
+    /etc/init.d/$appname start
+  done
+fi
+echo "INIT_SERVICE done"
+sv down init_sv
+exec sleep infinity

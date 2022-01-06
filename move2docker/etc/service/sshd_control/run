@@ -1,0 +1,15 @@
+#!/bin/bash
+. /.denv
+if [[ "$COMMAND_SSH" == 1 ]]; then
+  echo "command_ssh enabled, up"
+  printf -- "${SSH_KEY}" > ~/.ssh/id_rsa
+  ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+  ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/authorized_keys
+  printf -- "${SSH_AUTHED_KEYS}" >> ~/.ssh/authorized_keys
+  chmod 600 ~/.ssh/*
+  exec /usr/sbin/sshd -D -f /etc/ssh/sshd_config_control
+else
+  echo "command_ssh not set, down"
+  sv down sshd_control
+  exec sleep infinity
+fi

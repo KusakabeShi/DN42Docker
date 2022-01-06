@@ -1,0 +1,16 @@
+#!/bin/bash
+. /.denv
+if [[ "$BIRD" == 1 ]]; then
+  echo "bird enabled, start"
+  rm -r /etc/bird/nodes || true
+  /etc/bird/nodes_template/start.sh
+  template="/etc/bird/bird.conf.template"
+  conf="/etc/bird/bird.conf"
+  cat $template | sed -e 's/\${/＄/g' | sed 's/\$/${DOLLAR}/g' | sed 's/＄/${/g' | envsubst > $conf
+  mkdir -p /sys/fs/cgroup/cpu/bird
+  exec /usr/bin/bird -f -c /etc/bird/bird.conf
+else
+  echo "bird not enabled, down"
+  sv down bird
+  exec sleep infinity
+fi

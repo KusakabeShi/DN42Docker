@@ -1,0 +1,10 @@
+#!/bin/bash
+#Run at every boot time
+
+rsync -a --keep-dirlinks /home/root/.rootfs_ow/ /
+wget https://dn42.burble.com/roa/dn42_roa_bird2_4.conf -O /etc/bird/roa_dn42.conf.tmp -t 3 -q && mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
+wget https://dn42.burble.com/roa/dn42_roa_bird2_6.conf -O /etc/bird/roa_dn42_v6.conf.tmp -t 3 -q && mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf
+#change default shell to fish
+chsh -s /usr/bin/fish root
+
+echo "rc.local done"

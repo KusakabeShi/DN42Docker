@@ -1,0 +1,82 @@
+#!/bin/bash
+set -e
+function get_cpu_architecture()
+{
+    local cpuarch=$(uname -m)
+    case $cpuarch in
+         x86_64)
+              echo "amd64";
+              ;;
+         aarch64)
+              echo "arm64";
+              ;;
+         *)
+              echo "Not supported cpu architecture: ${cpuarch}"  >&2
+              exit 1
+              ;;
+    esac
+}
+export cpu_arch=$(get_cpu_architecture)
+
+# retrive configs from repo
+export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+mkdir -p /home/root
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+chmod 777 /tmp
+printf -- "${SSH_KEY}" > ~/.ssh/id_rsa
+chmod 600 ~/.ssh/*
+ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/authorized_keys
+git clone --depth 1 $GIT_REPO_ADDR /git_sync_root
+ln -s git_sync_root/${NODE_NAME} /git_sync_self
+#exec bash
+rsync -a --keep-dirlinks /git_sync_root/_common_ow/ /
+rsync -a --keep-dirlinks /git_sync_root/${NODE_NAME}/ow/ /
+
+python3 /git_sync_root/env_2_bash.py /git_sync_root/_common_env /git_sync_root/${NODE_NAME}/env > /.denv
+chmod 700 /.denv
+. /.denv
+
+echo "nameserver 1.1.1.1" > /etc/resolv.conf
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+
+git config --global user.email "$GIT_EMAIL"
+git config --global user.name "$GIT_USER"
+
+# set default env var
+export V2RAY_LOCAL_PORT="${V2RAY_LOCAL_PORT:-31372}"
+export V2RAY_PATH="${V2RAY_PATH:-/hidden/v2ray/path}"
+set +e
+export LD_PRELOAD=/lib/runit-docker.so
+source /etc/profile
+/etc/init.d/rcS
+
+#!/bin/bash
+set +e
+. /.denv
+
+set -x
+sysctl -w net.ipv4.ip_forward=1
+sysctl -w net.ipv4.conf.all.rp_filter=0
+sysctl -w net.ipv4.conf.default.rp_filter=0
+sysctl -w net.ipv6.conf.all.disable_ipv6=0
+sysctl -w net.ipv6.conf.all.forwarding=1
+sysctl -w net.ipv6.conf.default.forwarding=1
+
+ip link add dn42-dummy type dummy
+ip link set dn42-dummy up
+ip addr add $DN42_IPV4                       dev dn42-dummy
+ip addr add $DN42_IPV6                       dev dn42-dummy
+ip addr add $DN42_IPV4_ANYCAST_DNS/32  dev dn42-dummy
+ip addr add $DN42_IPV6_ANYCAST_DNS/128 dev dn42-dummy
+
+ip link set lo up
+ip    addr  add       $DN42_IPV4_NET_ANYCAST dev lo
+ip -6 route add local $DN42_IPV6_NET_ANYCAST dev lo
+
+
+parser=$(head -n 1 /etc/rc.local)
+eval ${parser:2} /etc/rc.local
+
+exec runsvdir /etc/service

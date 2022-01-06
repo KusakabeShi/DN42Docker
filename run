@@ -1,0 +1,7 @@
+#!/bin/bash
+export VCL_CFG=/etc/vpp/vcl.conf
+export LDP_DEBUG=0
+export VCL_DEBUG=0
+export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libvcl_ldpreload.so"
+#exec nc -l 8888
+exec nc 172.22.77.33 8888

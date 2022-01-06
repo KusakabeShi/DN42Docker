@@ -1,0 +1,22 @@
+#!/bin/bash
+#Log web app uptime 
+. /.denv
+if [[ "$UPTIME_LOG" == 1 ]]; then
+  echo "UPTIME_LOG enabled, uptime_log up"
+  mkdir -p /home/root/.log/
+  logfile="/home/root/.log/uptime.log"
+  IFS=$''
+  echo "$logfile"
+  echo "$(date +%m/%d,%T) up" >> "$logfile"
+  echo "$(date +%m/%d,%T) down" >> "$logfile"
+  while :
+  do
+          sleep 1
+          echo $(head -n-1 "$logfile")$'\n'$(date +%m/%d,%T)" down" > "$logfile"
+  done
+else
+  echo "UPTIME_LOG disabled, uptime_log down"
+  sv down uptime_log
+  exec sleep infinity
+fi
+

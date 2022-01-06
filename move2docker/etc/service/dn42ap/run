@@ -1,0 +1,18 @@
+#!/bin/bash
+. /.denv
+if [[ "$DN42AP" == 1 ]]; then
+  echo "dn42ap enabled, start"
+  if birdc s p ; then
+    true
+  else
+    echo "BIRD not ready, wait 8 seconds"
+    exec sleep 8
+  fi
+  cd /etc/dn42ap_py
+  #git pull
+  exec python3 /etc/dn42ap_py/DN42AutoPeer.py
+else
+  echo "dn42ap not enabled, down"
+  sv down dn42ap
+  exec sleep infinity
+fi
