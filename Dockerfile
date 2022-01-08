@@ -27,6 +27,6 @@ ENV EDITOR vim \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 
-EXPOSE 80 2222
+EXPOSE 23000-23200
 ENTRYPOINT ["/sbin/runit-docker"]
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+. /.denv
+if [[ "$PF" == 1 ]]; then
+  echo "peerfinder enabled, start peerfinder"
+  export UUID=$PF_UUID
+  /etc/service/peerfinder/peerfinder.sh
+  exec sleep $PF_INTERVAL
+else
+  echo "peerfinder not enabled, peerfinder down"
+  sv down peerfinder
+  exec sleep infinity
+fi

@@ -18,6 +18,13 @@ function get_cpu_architecture()
 }
 export cpu_arch=$(get_cpu_architecture)
 
+mkdir -p /dev/net
+if [ ! -c /dev/net/tun ]; then
+    echo "/dev/net/tun not found!"
+    mknod /dev/net/tun c 10 200
+    chmod 0755 /dev/net/tun 
+fi
+
 # retrive configs from repo
 export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 mkdir -p /home/root
@@ -28,7 +35,16 @@ printf -- "${SSH_KEY}" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/*
 ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
 ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/authorized_keys
-git clone --depth 1 $GIT_REPO_ADDR /git_sync_root
+if [[ -d /git_sync_root ]]; then
+    cd /git_sync_root
+    git add -A
+    git fetch --all --force
+    git reset --hard origin/master
+    cd /
+else
+    git clone --depth 1 $GIT_REPO_ADDR /git_sync_root
+fi
+
 ln -s git_sync_root/${NODE_NAME} /git_sync_self
 #exec bash
 rsync -a --keep-dirlinks /git_sync_root/_common_ow/ /
@@ -38,8 +54,12 @@ python3 /git_sync_root/env_2_bash.py /git_sync_root/_common_env /git_sync_root/$
 chmod 700 /.denv
 . /.denv
 
-echo "nameserver 1.1.1.1" > /etc/resolv.conf
+echo "nameserver ${DN42_IPV4_ANYCAST_DNS}" > /etc/resolv.conf
+echo "nameserver ${DN42_IPV6_ANYCAST_DNS}" >> /etc/resolv.conf
+echo "nameserver 1.1.1.1" >> /etc/resolv.conf
 echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+echo "nameserver 2606:4700:4700::1111" >> /etc/resolv.conf
+echo "nameserver 2001:4860:4860::8888" >> /etc/resolv.conf
 
 git config --global user.email "$GIT_EMAIL"
 git config --global user.name "$GIT_USER"
@@ -57,6 +77,7 @@ set +e
 . /.denv
 
 set -x
+iptables -P FORWARD ACCEPT
 sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv4.conf.all.rp_filter=0
 sysctl -w net.ipv4.conf.default.rp_filter=0

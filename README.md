@@ -6,7 +6,7 @@ https://github.com/KusakabeSi/RootlessRouter-UML
 ## How to build it
 
 Prepare build kit
-```
+```bash
 # make your computer able to rum arm64 binary
 docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
 # enable expremental feature
@@ -22,8 +22,14 @@ docker buildx build  --platform linux/amd64 -t whojk/dn42docker . --output="type
 
 #Test in localhost
 #-v /home/hujk/Documents/DN42-AutoPeer:/etc/dn42ap_py 
-docker run -it --rm --env-file=env_file_any -e NODE_NAME=tw --name=dntw  --network host --cap-add NET_ADMIN  whojk/dn42docker
+docker run -it --rm --env-file=env_file_any -e NODE_NAME=tw --name=dn --network host --cap-add NET_ADMIN  whojk/dn42docker
+docker run -it --rm --env-file=env_file_any -e NODE_NAME=tw --name=dn --privileged whojk/dn42docker
 docker exec -it dntw bash
+```
+
+run in env
+```bash
+docker run -it -d --restart=always --env-file=env_file_any -e NODE_NAME=tw --name=dn --network host --cap-add NET_ADMIN  whojk/dn42docker
 ```
 
 Build and push

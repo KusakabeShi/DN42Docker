@@ -25,6 +25,8 @@ if [[ "$WGCF" == 1 ]]; then
     ip -6 addr add $WGCF_IPV6 dev wgcf
     ip -6 route replace default dev wgcf
   fi
+  sv down wgcf
+  exec sleep infinity
 else
   echo "wgcf not enabled, down"
   sv down wgcf

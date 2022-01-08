@@ -9,4 +9,4 @@ sleep $delay
 boot_on.sh &
 boot_on_pid=$!
 sleep 1
-curl --connect-timeout 10 --silent --output /dev/null $REBOOT_BOOTON_URL && kill 1 || kill $boot_on_pid
+kill 1 || kill $boot_on_pid
