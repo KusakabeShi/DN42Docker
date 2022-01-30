@@ -13,6 +13,8 @@ cp -p sbin/bird                                       /usr/bin/bird
 cp -p sbin/birdc                                      /usr/bin/birdc
 cp -p sbin/birdcl                                     /usr/bin/birdcl
 cp -p usr/bin/wg                                      /usr/bin/wg
+cp -p root_tmp/whois42d/whois42d                      /usr/bin/whois42d
+cp -p root_tmp/RegistryWizard/out/RegistryWizard.jar  /usr/bin/RegistryWizard.jar
 
 rm -rf /tmp
 mkdir -p /tmp

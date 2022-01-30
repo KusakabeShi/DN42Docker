@@ -28,7 +28,20 @@ go build -ldflags "-w -s" -o proxy
 chmod 755 proxy
 cd ..
 
-v=202201040603
+cd ~
+git clone https://github.com/KusakabeSi/whois42d
+cd whois42d
+go mod init github.com/Mic92/whois42d
+go mod tidy
+go build -o whois42d
+
+cd ~
+git clone https://gitlab.com/kskbsi/RegistryWizard.git
+cd RegistryWizard
+bash build.sh
+chmod 755 out/RegistryWizard.jar
+
+v=202201310457
 set +e
 rm -r /tmp/*
 rm -r /tmp/.*

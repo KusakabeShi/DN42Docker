@@ -2,6 +2,15 @@
 . /.denv
 if [[ "$DN42AP" == 1 ]]; then
   echo "dn42ap enabled, start"
+  if [ ! -d /etc/dn42ap_py ]; then
+    echo "Directory not found!"
+    if [[ -d /ext ]]; then
+      ln -s /ext/DN42-AutoPeer /etc/dn42ap_py
+    else
+      git clone --depth 1 https://github.com/KusakabeSi/DN42-AutoPeer.git /etc/dn42ap_py
+    fi
+    chmod 755 /etc/dn42ap_py/*
+  fi
   if birdc s p ; then
     true
   else

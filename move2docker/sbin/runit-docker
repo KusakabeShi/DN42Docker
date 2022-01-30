@@ -70,7 +70,8 @@ export V2RAY_PATH="${V2RAY_PATH:-/hidden/v2ray/path}"
 set +e
 export LD_PRELOAD=/lib/runit-docker.so
 source /etc/profile
-/etc/init.d/rcS
+/etc/init.d/ssh start
+/etc/init.d/wgcf.sh
 
 #!/bin/bash
 set +e

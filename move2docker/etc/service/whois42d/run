@@ -1,0 +1,16 @@
+#!/bin/bash
+. /.denv
+export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+if [[ "$WHOIS42D" == 1 ]]; then
+  echo "whois42d enabled, start"
+  if [ ! -d /etc/whois42d/registry ]; then
+    echo "/etc/whois42d/registry not found!"
+    git clone --depth 1 "${WHOIS42D_GIT_REPO}" /etc/whois42d/registry
+  fi
+  /etc/whois42d
+  exec whois42d -registry /etc/whois42d/registry -port $WHOIS42D_PORT
+else
+  echo "whois42d not enabled, down"
+  sv down whois42d
+  exec sleep infinity
+fi

@@ -1,0 +1,17 @@
+#!/bin/bash
+. /.denv
+export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+if [[ "$WHOIS42D" == 1 ]]; then
+  echo "whois42d_sync enabled, start"
+  sleep $WHOIS42D_SYNC_INTERVAL
+  if [ ! -d /etc/whois42d/registry ]; then
+    echo "/etc/whois42d/registry not found!"
+    git clone --depth 1 "${WHOIS42D_GIT_REPO}" /etc/whois42d/registry
+  fi
+  cd /etc/whois42d/registry
+  git pull
+else
+  echo "whois42d_sync not enabled, down"
+  sv down whois42d_sync
+  exec sleep infinity
+fi
