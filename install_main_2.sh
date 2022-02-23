@@ -20,7 +20,7 @@ function get_cpu_architecture()
     esac
 }
 cpu_arch=$(get_cpu_architecture)
-. /etc/lsb-release
+. /etc/os-release
 
 #mkdir /etc/uml
 #cd /etc/uml

@@ -15,6 +15,7 @@ cp -p sbin/birdcl                                     /usr/bin/birdcl
 cp -p usr/bin/wg                                      /usr/bin/wg
 cp -p root_tmp/whois42d/whois42d                      /usr/bin/whois42d
 cp -p root_tmp/RegistryWizard/out/RegistryWizard.jar  /usr/bin/RegistryWizard.jar
-
+cp -p root_tmp/udp2raw/udp2raw_amd64_hw_aes           /usr/bin/udp2raw
+rm -rf /etc/service/ssh
 rm -rf /tmp
 mkdir -p /tmp

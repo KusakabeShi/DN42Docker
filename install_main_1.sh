@@ -21,19 +21,17 @@ function get_cpu_architecture()
     esac
 }
 cpu_arch=$(get_cpu_architecture)
-. /etc/lsb-release
+. /etc/os-release
 echo "Install & update"
 apt-get -y update
 apt-get -y install software-properties-common wget curl
-add-apt-repository universe
-apt-get -y update
 apt-get -y dist-upgrade
 apt-get -y install apt-utils runit locales openssh-server cron vim git sudo rsync nginx-extras jq gettext tcptraceroute traceroute cpulimit
 apt-get -y install unzip fish zsh tmux htop aria2 lsof tree ncdu iptables tcpdump net-tools netcat-traditional wondershaper iperf3 bind9 \
- python3-setuptools python3 python3-pip default-jre-headless \
- net-tools iputils-\* p7zip-full p7zip-rar \
- gawk git-core gnupg2 netcat nmap dnsutils socat
-pip3       install --upgrade speedtest-cli pycryptodome pyOpenSSL tornado pyyaml pyjwt PGPy gitpython pynacl
+ python3-setuptools python3 python3-pip openjdk-17-jdk-headless \
+ net-tools iputils-\* p7zip-full \
+ gawk git-core gnupg2 netcat nmap dnsutils socat openvpn babeld
+pip3       install --upgrade speedtest-cli pycryptodome pyOpenSSL tornado pyyaml pyjwt PGPy gitpython pynacl requests
 
 wget http://www.vdberg.org/~richard/tcpping -O /usr/bin/tcpping
 chmod 755 /usr/bin/tcpping

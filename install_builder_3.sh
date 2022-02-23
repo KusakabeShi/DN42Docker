@@ -11,6 +11,15 @@ HOME=/root_tmp
 #ls bin
 
 cd ~
+curl -s https://api.github.com/repos/wangyu-/udp2raw/releases/latest \
+| grep "browser_download_url.*\.tar\.gz" \
+| cut -d : -f 2,3 \
+| tr -d \" \
+| wget -i - -O udp2raw.tar.gz
+mkdir udp2raw
+tar -xvzf udp2raw.tar.gz -C udp2raw
+
+cd ~
 git clone https://github.com/KusakabeSi/EtherGuard-VPN
 cd EtherGuard-VPN
 make

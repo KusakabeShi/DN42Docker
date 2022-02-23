@@ -1,8 +1,6 @@
 #!/bin/bash
 set -x
 set -e
-echo "Config for azure"
-echo "root:Docker!" | chpasswd
 mkdir /run/sshd
 chmod 777 /tmp
 HOME=/root_tmp
