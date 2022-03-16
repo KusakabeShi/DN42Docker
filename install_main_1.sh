@@ -28,7 +28,7 @@ apt-get -y install software-properties-common wget curl
 apt-get -y dist-upgrade
 apt-get -y install apt-utils runit locales openssh-server cron vim git sudo rsync nginx-extras jq gettext tcptraceroute traceroute cpulimit
 apt-get -y install unzip fish zsh tmux htop aria2 lsof tree ncdu iptables tcpdump net-tools netcat-traditional wondershaper iperf3 bind9 \
- python3-setuptools python3 python3-pip openjdk-17-jdk-headless \
+ python3-setuptools python3 python3-pip openjdk-17-jdk-headless mtr-tiny \
  net-tools iputils-\* p7zip-full \
  gawk git-core gnupg2 netcat nmap dnsutils socat openvpn babeld
 pip3       install --upgrade speedtest-cli pycryptodome pyOpenSSL tornado pyyaml pyjwt PGPy gitpython pynacl requests

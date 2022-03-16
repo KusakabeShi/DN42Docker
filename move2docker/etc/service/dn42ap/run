@@ -1,5 +1,8 @@
 #!/bin/bash
 . /.denv
+
+DN42AP_REPO_URL="${DN42AP_REPO_URL:=https://github.com/KusakabeSi/DN42-AutoPeer.git}"
+
 if [[ "$DN42AP" == 1 ]]; then
   echo "dn42ap enabled, start"
   if [ ! -d /etc/dn42ap_py ]; then
@@ -7,7 +10,7 @@ if [[ "$DN42AP" == 1 ]]; then
     if [[ -d /ext ]]; then
       ln -s /ext/DN42-AutoPeer /etc/dn42ap_py
     else
-      git clone --depth 1 https://github.com/KusakabeSi/DN42-AutoPeer.git /etc/dn42ap_py
+      git clone --depth 1 "$DN42AP_REPO_URL" /etc/dn42ap_py
     fi
     chmod 755 /etc/dn42ap_py/*
   fi

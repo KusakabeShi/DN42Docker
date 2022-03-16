@@ -17,8 +17,6 @@ if [[ "$WGCF" == 1 ]]; then
   ip link set mtu $WGCF_MTU dev dn42-wgcf
   ip addr add $WGCF_IPV4/32 dev dn42-wgcf
   ip -6 addr add $WGCF_IPV6/128 dev dn42-wgcf
-  iptables-nft -t nat -A POSTROUTING -o dn42-wgcf -j SNAT --to $WGCF_IPV4
-  ip6tables-nft -t nat -A POSTROUTING -o dn42-wgcf -j SNAT --to $WGCF_IPV6
   if [[ "$WGCF4" == 1 ]]; then
     echo "wgcf v4 route enabled"
     ip route replace default dev dn42-wgcf

@@ -71,6 +71,7 @@ set +e
 export LD_PRELOAD=/lib/runit-docker.so
 source /etc/profile
 /etc/init.d/wgcf.sh
+/etc/init.d/dn42fw.sh
 
 #!/bin/bash
 set +e
@@ -95,7 +96,6 @@ ip addr add $DN42_IPV6_ANYCAST_DNS/128 dev dn42-dummy
 ip link set lo up
 ip    addr  add       $DN42_IPV4_NET_ANYCAST dev lo
 ip -6 route add local $DN42_IPV6_NET_ANYCAST dev lo
-
 
 parser=$(head -n 1 /etc/rc.local)
 eval ${parser:2} /etc/rc.local
