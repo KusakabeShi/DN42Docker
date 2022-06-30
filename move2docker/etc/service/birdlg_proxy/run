@@ -2,7 +2,7 @@
 . /.denv
 if [[ "$BIRDLG_PROXY" == 1 ]]; then
   echo "birdlg_proxy enabled, start"
-  exec bird-lg-proxy --listen=:$BIRDLG_PROXY_PORT
+  exec bird-lg-proxy --listen=127.0.0.1:$BIRDLG_PROXY_PORT
 else
   echo "birdlg_proxy not enabled, down"
   sv down birdlg_proxy

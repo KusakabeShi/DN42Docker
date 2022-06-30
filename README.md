@@ -22,8 +22,8 @@ docker buildx build  --platform linux/amd64 -t whojk/dn42docker . --output="type
 
 #Test in localhost
 #-v /home/hujk/Documents/DN42-AutoPeer:/etc/dn42ap_py 
-docker run -it --rm --env-file=env_file_any -e NODE_NAME=tw --name=dn --network host --cap-add NET_ADMIN  whojk/dn42docker
-docker run -it --rm --env-file=env_file_any -e NODE_NAME=tw --name=dn --privileged whojk/dn42docker
+docker run -it --rm --env-file=env_file_any -e NODE_NAME=tw --name=dn --network host --cap-add NET_ADMIN  kskbsi/dn42docker
+docker run -it --rm --env-file=env_file_any -e NODE_NAME=tw --name=dn --privileged kskbsi/dn42docker
 docker exec -it dntw bash
 ```
 

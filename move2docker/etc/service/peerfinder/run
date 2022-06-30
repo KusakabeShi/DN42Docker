@@ -1,6 +1,6 @@
 #!/bin/bash
 . /.denv
-if [[ "$PF" == 1 ]]; then
+if [[ "$PF" == 1 && ! -z "$PF_UUID" ]]; then
   echo "peerfinder enabled, start peerfinder"
   export UUID=$PF_UUID
   /etc/service/peerfinder/peerfinder.sh
