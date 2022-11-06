@@ -4,8 +4,10 @@ if [[ "$BIRD" == 1 ]]; then
   set -e
   set -x
   echo "bird enabled, start"
-  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_4.conf -O /etc/bird/roa_dn42.conf.tmp -t 3 && mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf || ( sleep 5;exit 1)
-  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_6.conf -O /etc/bird/roa_dn42_v6.conf.tmp -t 3 && mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf || (sleep 5; exit 1)
+  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_4.conf -qO /etc/bird/roa_dn42.conf.tmp -t 3 && mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
+  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_6.conf -qO /etc/bird/roa_dn42_v6.conf.tmp -t 3 && mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf
+  touch /etc/bird/roa_dn42.conf
+  touch /etc/bird/roa_dn42_v6.conf
   java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v4 > /etc/bird/roa_dn42.conf.tmp || ( sleep 5;exit 1)
   mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
   java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v6 > /etc/bird/roa_dn42_v6.conf.tmp || ( sleep 5;exit 1)

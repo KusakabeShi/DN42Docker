@@ -12,7 +12,7 @@ if [[ "$V2RAY" == 1 ]]; then
   v2rayconf=$(echo $v2rayconf | jq ".inbounds[0].streamSettings.wsSettings.path = \"$V2RAY_PATH\"" ) 
   v2rayconf=$(echo $v2rayconf | jq ".inbounds[0].port = \"$V2RAY_LOCAL_PORT\"" ) 
   echo $v2rayconf | jq '.' > /etc/v2ray/config.json
-  exec v2ray -config /etc/v2ray/config.json
+  exec v2ray run -c /etc/v2ray/config.json
 else
   echo "v2ray not enabled, down"
   sv down v2ray

@@ -32,7 +32,7 @@ apt-get -y install unzip fish zsh tmux htop aria2 lsof tree ncdu iptables tcpdum
  net-tools iputils-\* p7zip-full \
  gawk git-core gnupg2 netcat nmap dnsutils socat openvpn babeld
 pip3       install --upgrade speedtest-cli pycryptodome pyOpenSSL tornado pyyaml pyjwt PGPy gitpython pynacl requests jinja2
-
+pip3       install cryptography==37.0.4
 wget http://www.vdberg.org/~richard/tcpping -O /usr/bin/tcpping
 chmod 755 /usr/bin/tcpping
 
