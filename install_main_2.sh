@@ -5,13 +5,16 @@ export HOME=/root_tmp
 export DEBIAN_FRONTEND=noninteractive
 function get_cpu_architecture()
 {
-    local cpuarch=$(uname -m)
+    local cpuarch=$(dpkg --print-architecture)
     case $cpuarch in
-         x86_64)
+         amd64)
               echo "amd64";
               ;;
-         aarch64)
+         arm64)
               echo "arm64";
+              ;;
+         armhf)
+              echo "arm";
               ;;
          *)
               echo "Not supported cpu architecture: ${cpuarch}"  >&2

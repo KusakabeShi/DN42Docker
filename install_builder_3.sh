@@ -24,6 +24,7 @@ git clone https://github.com/KusakabeSi/EtherGuard-VPN
 cd EtherGuard-VPN
 make
 
+
 cd ~
 git clone https://github.com/KusakabeSi/bird-lg-go
 cd bird-lg-go

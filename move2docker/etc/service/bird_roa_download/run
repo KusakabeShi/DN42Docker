@@ -4,16 +4,55 @@ if [[ "$BIRD" == 1 ]]; then
   set -e
   set -x
   echo "bird enabled, start"
-  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_4.conf -qO /etc/bird/roa_dn42.conf.tmp -t 3 && mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
-  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_6.conf -qO /etc/bird/roa_dn42_v6.conf.tmp -t 3 && mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf
+  
   touch /etc/bird/roa_dn42.conf
   touch /etc/bird/roa_dn42_v6.conf
+  
+  v4_stage_1_empty=true
+  v4_stage_2_empty=true
+  v4_stage_3_empty=true
+  v6_stage_1_empty=true
+  v6_stage_2_empty=true
+  v6_stage_3_empty=true
+  if [ -s /etc/bird/roa_dn42.conf ]; then
+    v4_stage_1_empty=false
+  fi
+  if [ -s /etc/bird/roa_dn42_v6.conf ]; then
+    v6_stage_1_empty=false
+  fi
+  
+  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_4.conf -qO /etc/bird/roa_dn42.conf.tmp -t 3 && mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
+  timeout -s KILL 10 wget https://dn42.burble.com/roa/dn42_roa_bird2_6.conf -qO /etc/bird/roa_dn42_v6.conf.tmp -t 3 && mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf
+  if [ -s /etc/bird/roa_dn42.conf ]; then
+    v4_stage_2_empty=false
+  fi
+  if [ -s /etc/bird/roa_dn42_v6.conf ]; then
+    v6_stage_2_empty=false
+  fi
+  
+  if [[ ("$v4_stage_1_empty" = true && "$v4_stage_2_empty" = false) || ("$v6_stage_1_empty" = true && "$v6_stage_2_empty" = false) ]] ; then
+    sv restart bird
+  fi
+  
   java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v4 > /etc/bird/roa_dn42.conf.tmp || ( sleep 5;exit 1)
   mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
   java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v6 > /etc/bird/roa_dn42_v6.conf.tmp || ( sleep 5;exit 1)
   mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf
   set +e
-  birdc configure
+  
+  if [ -s /etc/bird/roa_dn42.conf ]; then
+    v4_stage_3_empty=false
+  fi
+  if [ -s /etc/bird/roa_dn42_v6.conf ]; then
+    v6_stage_3_empty=false
+  fi
+  
+  if [[ ("$v4_stage_1_empty" = true && "$v4_stage_2_empty" = true && "$v4_stage_3_empty" = false) || ("$v6_stage_1_empty" = true && "$v6_stage_2_empty" = true && "$v6_stage_3_empty" = false) ]] ; then
+    sv restart bird
+  else
+    birdc configure
+  fi
+  
   sleep $((RANDOM % 30000 + 30000))
 else
   echo "bird not enabled, down"
