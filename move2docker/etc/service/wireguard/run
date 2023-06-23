@@ -1,0 +1,7 @@
+#!/bin/bash
+set -x
+for filename in /etc/wireguard/pub_*.conf; do
+    [ -e "$filename" ] || continue
+    wg-quick up "$(basename "$filename" .conf)" || true
+done
+sleep infinity

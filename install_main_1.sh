@@ -59,15 +59,15 @@ rm      cloudflared-linux-${cpu_arch}.deb
 
 
 apt-get -y dist-upgrade
-apt-get -y install apt-utils runit locales openssh-server cron vim git sudo rsync nginx-extras jq gettext tcptraceroute traceroute cpulimit
+apt-get -y install apt-utils runit locales openssh-server cron vim git sudo rsync nginx-extras jq gettext tcptraceroute traceroute curl
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
 apt-get -y install unzip fish zsh tmux htop aria2 lsof tree ncdu iptables tcpdump net-tools netcat-traditional wondershaper iperf3 bind9 \
- python3-setuptools python3 python3-pip openjdk-17-jdk-headless mtr-tiny \
- net-tools iputils-\* p7zip-full \
- gawk git-core gnupg2 netcat nmap dnsutils socat openvpn babeld libssl-dev libffi-dev rustc # for pycryptodome
+ python3-setuptools python3 python3-pip openjdk-17-jdk-headless mtr-tiny wireguard-tools\
+ net-tools iputils-\* p7zip-full speedtest \
+ gawk git-core gnupg2 netcat nmap dnsutils socat openvpn babeld libssl-dev pkg-config libffi-dev rustc # for pycryptodome
 
 pip3 install --upgrade pip
-pip3       install --upgrade speedtest-cli pycryptodome pyOpenSSL tornado pyyaml pyjwt PGPy gitpython pynacl requests jinja2
-pip3       install cryptography==37.0.4
+pip3       install --upgrade pycryptodome pyOpenSSL tornado pyyaml pyjwt PGPy gitpython pynacl requests jinja2
 wget http://www.vdberg.org/~richard/tcpping -O /usr/bin/tcpping
 chmod 755 /usr/bin/tcpping
 

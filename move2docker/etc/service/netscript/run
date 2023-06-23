@@ -1,0 +1,7 @@
+#!/bin/bash
+for filename in /etc/netscript/*.sh; do
+    [ -e "$filename" ] || continue
+    parser=$(head -n 1 "$filename")
+    eval "${parser:2}" /etc/rc.local
+done
+sleep infinity

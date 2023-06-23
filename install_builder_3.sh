@@ -24,7 +24,6 @@ git clone https://github.com/KusakabeSi/EtherGuard-VPN
 cd EtherGuard-VPN
 make
 
-
 cd ~
 git clone https://github.com/KusakabeSi/bird-lg-go
 cd bird-lg-go
@@ -56,3 +55,5 @@ set +e
 rm -r /tmp/*
 rm -r /tmp/.*
 exit 0
+
+# build 20230223
