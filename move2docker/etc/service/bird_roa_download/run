@@ -35,10 +35,10 @@ if [[ "$BIRD_DN42" == 1 ]]; then
     exit 0
   fi
   
-  java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v4 > /etc/bird/roa_dn42.conf.tmp || ( sleep 5;exit 1)
-  mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
-  java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v6 > /etc/bird/roa_dn42_v6.conf.tmp || ( sleep 5;exit 1)
-  mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf
+#  java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v4 > /etc/bird/roa_dn42.conf.tmp || ( sleep 5;exit 1)
+#  mv /etc/bird/roa_dn42.conf.tmp /etc/bird/roa_dn42.conf
+#  java -jar /usr/bin/RegistryWizard.jar /etc/whois42d/registry roa bird2 v6 > /etc/bird/roa_dn42_v6.conf.tmp || ( sleep 5;exit 1)
+#  mv /etc/bird/roa_dn42_v6.conf.tmp /etc/bird/roa_dn42_v6.conf
   set +e
   
   if [ -s /etc/bird/roa_dn42.conf ]; then
